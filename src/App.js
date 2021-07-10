@@ -4,7 +4,7 @@ import { FaQuoteRight } from 'react-icons/fa';
 import data from './data';
 function App() {
   const [reviews, setReviews] = useState(data);
-
+  const [value,setValue] = useState(0);
   return (
     <section className="section">
       <div className="title">
@@ -14,7 +14,9 @@ function App() {
       </div>
       <div className="section-center">       
         {reviews.map((element,index) => {
-          let position = 'lastSlide';
+          let position = 'nextSlide';
+          if(value === index) position = 'activeSlide';
+          if((value-1 === index) || (index === reviews.length-1 && value === 0))position = 'lastSlide'
           const {image,name,title,quote} = element;
           return(
             <article className={position} id={index}>
@@ -26,6 +28,14 @@ function App() {
             </article>
           )
         })}
+        <button className="prev" onClick = {() => {
+          let num = (value-1>=0)?value-1:reviews.length-1;
+          setValue(num);
+        }}><FiChevronLeft/></button>
+        <button className="next" onClick = {() => {
+          let num = (value+1)%reviews.length;
+          setValue(num);
+        }}><FiChevronRight/></button>
       </div>
     </section>
   )
