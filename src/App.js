@@ -5,6 +5,20 @@ import data from './data';
 function App() {
   const [reviews, setReviews] = useState(data);
   const [value,setValue] = useState(0);
+
+  //implemtation of slider using useEffect hook
+  useEffect(()=>{
+    const size = reviews.length - 1;
+    if(value < 0)setValue(size);
+    if(value > size)setValue(0);
+  },[value,reviews]);
+  useEffect(()=>{
+    const slider = setTimeout(() => {
+      setValue(value+1);
+    }, 3000);
+    return() => clearInterval(slider);
+  },[value]);
+  
   return (
     <section className="section">
       <div className="title">
@@ -28,14 +42,17 @@ function App() {
             </article>
           )
         })}
-        <button className="prev" onClick = {() => {
+        {/* slider funtion using onClick function */}
+        {/* <button className="prev" onClick = {() => {
           let num = (value-1>=0)?value-1:reviews.length-1;
           setValue(num);
         }}><FiChevronLeft/></button>
         <button className="next" onClick = {() => {
           let num = (value+1)%reviews.length;
           setValue(num);
-        }}><FiChevronRight/></button>
+        }}><FiChevronRight/></button> */}
+        <button className="prev" onClick = {() => {setValue(value-1);}}><FiChevronLeft/></button>        
+        <button className="next" onClick = {() => {setValue(value+1);}}><FiChevronRight/></button>
       </div>
     </section>
   )
